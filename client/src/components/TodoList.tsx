@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
+import { idbPromise } from '../utils/helpers';
 
-interface todo {
+export type todo = {
     id: number;
-    title: string;
-    text: string;
+    title: string,
+    text: string, 
     completed: boolean;
 }
 
@@ -30,10 +31,16 @@ const TodoList = () => {
         e.preventDefault();
         const form = e.target;
         const formData = new FormData(form)
-        const value = Array.from(formData.entries())
-        console.log(value)
-        // Save values to new object.
-        
+
+        const newTodo: todo = {
+            id: 3,
+            title: formData.get('title') as string,
+            text: formData.get('text') as string,
+            completed: false
+        }
+
+        idbPromise('todos', 'put', newTodo);
+
     }
 
     return (
@@ -42,7 +49,7 @@ const TodoList = () => {
                 <form className='form-wrap' id='text' onSubmit={handleOnSubmit}>
                     <label>
                         Todo title: 
-                        <input type='text'></input>
+                        <input type='text' name='title'></input>
                     </label>
                     <label>
                         What to do?
