@@ -1,4 +1,5 @@
 import React from "react";
+import TodoList from "./components/TodoList";
 
 function App() {
 
@@ -8,7 +9,7 @@ function App() {
       DATE PICKER?
       COMPONENT TO ADD COMMENT
       LIST OF ALL TODOS FOR TODAY
-      
+      <TodoList />
     </div>
   );
 }
