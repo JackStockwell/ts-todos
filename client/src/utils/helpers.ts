@@ -1,7 +1,7 @@
 import { todo } from "../components/TodoList";
 
 // Idb function. Exported for use.
-export const idbPromise = (storeName: string, method: string, object?: todo) => {
+export const idbPromise = (storeName: string, method: string, object?: todo, id?: todo['id']) => {
     return new Promise((res, rej) => {
         // Opens the todos DB
         const request = window.indexedDB.open('todos', 1);
@@ -41,7 +41,7 @@ export const idbPromise = (storeName: string, method: string, object?: todo) => 
                     }
                     break;
                 case 'delete':
-                    store.delete(object?.id)
+                    store.delete(id)
                     break;
                 case 'add':
                     store.add(object)
