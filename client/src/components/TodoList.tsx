@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { idbPromise } from '../utils/helpers';
 
+import TodoItem from './TodoItem'
+
 export type todo = {
     title: string,
     text: string, 
@@ -11,11 +13,8 @@ export type todo = {
 
 const TodoList = () => {
 
-    const todoState: todo[] = [
-        {title: "Test", text: "Test Todo", completed: false},
-    ]
-
-    const [todos, setTodos] = useState<todo[]>(todoState)
+    // Array of todos, what is parsed to render the items.
+    const [todos, setTodos] = useState<todo[]>()
 
     const fetchData = async (): Promise<Array<todo> | string | undefined> => {
 
@@ -23,7 +22,6 @@ const TodoList = () => {
             const response: any = await idbPromise('todos', 'get')
             setTodos(response)
             return;
-
         } catch (err) {
             if (err) {
                 return err.message
@@ -31,21 +29,9 @@ const TodoList = () => {
         }
         
     }
-
-    const handleToggle = (id: number | undefined) => {
-        todos.map((todo) => {
-            if (todo.id === id) {
-                return { ...todo, completed: !todo.completed }
-            }
-            return todo;
-        })
-    }
-
-    // USE EFFECT, to retrieve data from indexDB, to be trigger when
-    // Todo is created,
-    // Upon page load.
-
-    const handleOnSubmit = (e: any) => {
+    // Handles new todo submission, takes the target, converts to form data
+    // Creates a new todo, adds it it state.
+    const handleOnSubmit = async (e: any) => {
         e.preventDefault();
         const form = e.target;
         const formData = new FormData(form)
@@ -63,14 +49,40 @@ const TodoList = () => {
             completed: false
         }
 
-        idbPromise('todos', 'add', newTodo);
+        await idbPromise('todos', 'add', newTodo);
+        setTodos([...(todos ?? []), newTodo])
+    }
+
+    // Handles the toggle between complete and incomplete.
+    const handleToggle = async (todoProp: todo) => {
+        // Update to the db with the todo spread, with completed changed to the opposed value.
+        const newTodos = todos?.map((todo) => {
+            if (todo.id === todoProp.id) {
+                return {...todo, completed: !todo.completed};
+            } else {
+                return todo;
+            } 
+        });
+
+        await idbPromise('todos', 'put', {...todoProp, completed: !todoProp.completed});
+
+        setTodos(newTodos)
+
+        return;
+    }
+
+    // Handles the deletion of the todo.
+    const handleDelete = async (id: todo['id']) => {
+        setTodos(todos?.filter((todo) => {
+            return todo.id !== id
+        }));
+
+        await idbPromise('todos', 'delete', undefined, id);
     }
 
     useEffect(() => {
         fetchData();
     }, []);
-
-    console.log(todos)
 
     return (
         <div>
@@ -85,32 +97,16 @@ const TodoList = () => {
                         <textarea
                             name='text'
                             form='text'
-                            
                         >
-
                         </textarea>
                         <button type="submit">Add Todo</button>
                     </label>
                 </form>
             </div>
             <div>
-                <ul>
-                    {todos.map((todo) => (
-                        <div 
-                            key={todo.id} 
-                        >
-                            <p>
-                                {todo.text}
-                            </p>
-                            <button
-                                onClick={() => handleToggle(todo.id)} 
-                                className={todo.completed ? "todo-comp-btn" : "todo-incomp-btn"}
-                            >
-                                {todo.text}
-                            </button>
-                        </div>
-                    ))}
-                </ul>
+                {todos?.map((todo, index) => {
+                    return <TodoItem prop={todo} handleDelete={handleDelete} handleToggle={handleToggle} key={index} />
+                })}
             </div>
         </div>
     )
