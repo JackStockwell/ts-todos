@@ -5,12 +5,7 @@ function App() {
 
 
   return (
-    <div>
-      DATE PICKER?
-      COMPONENT TO ADD COMMENT
-      LIST OF ALL TODOS FOR TODAY
-      <TodoList />
-    </div>
+    <TodoList />
   );
 }
 

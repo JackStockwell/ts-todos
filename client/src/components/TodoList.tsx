@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { idbPromise } from '../utils/helpers';
+import '../styles/container.css'
 
 import TodoItem from './TodoItem'
+import TodoModal from './TodoModal';
 
 export type todo = {
     title: string,
@@ -16,6 +18,8 @@ const TodoList = () => {
     // Array of todos, what is parsed to render the items.
     const [todos, setTodos] = useState<todo[]>()
 
+    const [modal, setModal] = useState<boolean>(false)
+
     const fetchData = async (): Promise<Array<todo> | string | undefined> => {
 
         try {
@@ -29,6 +33,7 @@ const TodoList = () => {
         }
         
     }
+
     // Handles new todo submission, takes the target, converts to form data
     // Creates a new todo, adds it it state.
     const handleOnSubmit = async (e: any) => {
@@ -52,6 +57,7 @@ const TodoList = () => {
         await idbPromise('todos', 'add', newTodo);
         setTodos([...(todos ?? []), newTodo])
     }
+
 
     // Handles the toggle between complete and incomplete.
     const handleToggle = async (todoProp: todo) => {
@@ -84,31 +90,22 @@ const TodoList = () => {
         fetchData();
     }, []);
 
+    console.log(modal)
+
     return (
-        <div>
-            <div>
-                <form className='form-wrap' id='text' onSubmit={handleOnSubmit}>
-                    <label>
-                        Todo title: 
-                        <input type='text' name='title'></input>
-                    </label>
-                    <label>
-                        What to do?
-                        <textarea
-                            name='text'
-                            form='text'
-                        >
-                        </textarea>
-                        <button type="submit">Add Todo</button>
-                    </label>
-                </form>
-            </div>
+        <main className="main">
+            <TodoModal
+                openModal={modal} 
+                closeModal={() => setModal(false)} 
+                handleOnSubmit={handleOnSubmit}
+            />
+            <button onClick={() => setModal(true)}>New Todo?</button>
             <div>
                 {todos?.map((todo, index) => {
                     return <TodoItem prop={todo} handleDelete={handleDelete} handleToggle={handleToggle} key={index} />
                 })}
             </div>
-        </div>
+        </main>
     )
 }
 
