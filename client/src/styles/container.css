@@ -6,3 +6,17 @@
 .comment-div {
     display: flex;
 }
+
+dialog::backdrop {
+    box-sizing: border-box;
+    background: rgba(94, 94, 94, 0.256);
+    padding: 1rem;
+}
+
+dialog {
+    padding: 2rem;
+    background: rgb(55, 104, 202);
+    border-radius: 1rem;
+    border: transparent;
+    box-shadow: 3px 3px 3px rgb(169, 169, 169);
+}
