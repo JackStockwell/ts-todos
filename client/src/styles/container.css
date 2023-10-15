@@ -1,10 +1,22 @@
 .main {
     display: flex;
-    grid-template-columns: 1fr 1fr 1fr;
+    flex-flow: column;
+    gap: 2rem;
+    max-width: 60em;
+    margin: 5rem auto;
+    background: rgba(26, 26, 26, 0.163);
+    padding: 2rem;
 }
 
-.comment-div {
+.todo-wrapper {
     display: flex;
+    gap: 10px;
+    flex-flow: column;
+    max-width: 60em;
+}
+
+.todo-card {
+    border: 1px solid black;
 }
 
 dialog::backdrop {
@@ -14,9 +26,36 @@ dialog::backdrop {
 }
 
 dialog {
+    min-width: 15em;
+    max-width: 30em;
     padding: 2rem;
-    background: rgb(55, 104, 202);
     border-radius: 1rem;
+    border: solid 2px white;
+    box-shadow: 3px 3px 3px rgb(0, 0, 0);
+    margin-top: 7rem;
+    background-image: linear-gradient(144deg, #0062ffdc, #60efff);
+}
+
+.modal {
+    display: flex;
+    flex-flow: column;
+}
+
+.flex {
+    display: flex;
+}
+
+.col {
+    flex-flow: column;
+}
+
+.gap-1 {
+    gap: 0.5em;
+}
+
+.t-box {
     border: transparent;
-    box-shadow: 3px 3px 3px rgb(169, 169, 169);
+    border-radius: .25rem;
+    padding: 0.75em;
+    resize: none;
 }

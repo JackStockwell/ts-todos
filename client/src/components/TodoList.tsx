@@ -90,8 +90,6 @@ const TodoList = () => {
         fetchData();
     }, []);
 
-    console.log(modal)
-
     return (
         <main className="main">
             <TodoModal
@@ -99,8 +97,8 @@ const TodoList = () => {
                 closeModal={() => setModal(false)} 
                 handleOnSubmit={handleOnSubmit}
             />
-            <button onClick={() => setModal(true)}>New Todo?</button>
-            <div>
+            <button className='button' onClick={() => setModal(true)}><span>New Todo</span></button>
+            <div className='todo-wrapper'>
                 {todos?.map((todo, index) => {
                     return <TodoItem prop={todo} handleDelete={handleDelete} handleToggle={handleToggle} key={index} />
                 })}

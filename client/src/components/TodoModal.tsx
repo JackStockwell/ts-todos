@@ -20,23 +20,24 @@ const TodoModal = ({openModal, closeModal, handleOnSubmit}: props) => {
 
     return (
         <dialog ref={dialogRef} onCancel={closeModal}>
-            <section className='comment-div'>
+            <section className='modal'>
                 <form className='form-wrap' id='text' onSubmit={handleOnSubmit}>
-                    <label>
+                    <label className='flex col gap-1'>
                         Todo title: 
-                        <input type='text' name='title'></input>
+                        <input className='t-box' placeholder='Title' type='text' name='title'></input>
                     </label>
-                    <label>
+                    <label className='flex col gap-1'>
                         What to do?
                         <textarea
+                            className='t-box'
                             name='text'
                             form='text'
                         >
                         </textarea>
-                        <button type="submit">Add Todo</button>
+                        <button type="submit" onClick={closeModal}>Add Todo</button>
                     </label>
                 </form>
-                <button onClick={closeModal}>Close</button>
+                <button onClick={closeModal}>Cancel</button>
             </section>
         </dialog>
     )

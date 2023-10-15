@@ -14,11 +14,15 @@ const TodoItem = ({prop, handleDelete, handleToggle}: props) => {
 
     return (
         <>
-            <div className='item-card'>
-                <h3>{title}</h3>
-                <p>{text}</p>
-                <button onClick={() => handleToggle(prop)}>{completed ? "Complete" : "Todo"}</button>
-                <button onClick={() => handleDelete(id)}>Delete</button>
+            <div className='todo-card'>
+                <div>
+                    <h3>{title}</h3>
+                    <p>{text}</p>
+                </div>
+                <div>
+                    <button onClick={() => handleToggle(prop)}>{completed ? "Complete" : "Todo"}</button>
+                    <button onClick={() => handleDelete(id)}>Delete</button>
+                </div>
             </div>
         </>
     )
